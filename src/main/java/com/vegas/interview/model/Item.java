@@ -2,44 +2,23 @@ package com.vegas.interview.model;
 
 import java.math.BigDecimal;
 
-public class Item {
-    private int id;
-    private ItemType type;
-    private BigDecimal price;
+public interface Item {
+    public int getId();
+    public ItemType getType();
+    public BigDecimal getPrice();
 
-    public Item(int id, ItemType type, BigDecimal price) {
-        this.id = id;
-        this.type = type;
-        this.price = price;
+    public static Item createItem(int itemId, ItemType itemType, BigDecimal price) {
+        switch (itemType) {
+			case HOTEL:
+                return new Hotel(itemId, price);
+			case SHOW:
+                return new Show(itemId, price);
+			case TOUR:
+                return new Tour(itemId, price);
+			default:
+                throw new UnsupportedOperationException("Could not create item for type: " + itemType.getDisplayName());
+        }
+
+
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public ItemType getType() {
-        return type;
-    }
-
-    public void setType(ItemType type) {
-        this.type = type;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s (%s):\t$%s", this.type, this.id, this.price);
-    }
-
 }

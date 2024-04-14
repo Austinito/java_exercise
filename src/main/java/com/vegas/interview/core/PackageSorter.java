@@ -1,12 +1,12 @@
 package com.vegas.interview.core;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
-import com.vegas.interview.model.ItemType;
 import com.vegas.interview.model.ItemPackage;
+import com.vegas.interview.model.ItemType;
 
 public class PackageSorter {
     ArrayList<ItemType> sortPriority;

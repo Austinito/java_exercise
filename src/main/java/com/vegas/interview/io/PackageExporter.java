@@ -5,7 +5,9 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Optional;
 
+import com.vegas.interview.model.Item;
 import com.vegas.interview.model.ItemPackage;
 import com.vegas.interview.model.ItemType;
 
@@ -28,8 +30,6 @@ public class PackageExporter {
     private static String getExportFormat(ItemPackage itemPackage) {
         StringBuilder builder = new StringBuilder();
 
-        // Note: I only use `doubleValue()` to make it exact match with given examples.
-        // Otherwise, I'd prefer to keep it a BigDecimal.
         builder.append("PACKAGE\t").append(itemPackage.getTotalPrice().doubleValue());
         appendItemDetails(builder, itemPackage, ItemType.HOTEL);
         appendItemDetails(builder, itemPackage, ItemType.SHOW);
@@ -38,12 +38,20 @@ public class PackageExporter {
     }
 
     private static void appendItemDetails(StringBuilder builder, ItemPackage itemPackage, ItemType itemType) {
-        // I only append the extra tabs when it's not present to make it exact match
-        // with given examples.
-        itemPackage.getItem(itemType)
-                .ifPresentOrElse(p -> builder.append('\t').append(itemType.getDisplayName()).append('\t')
-                        .append(p.getId()).append('\t').append(p.getPrice().doubleValue()),
-                        () -> builder.append("\t\t\t"));
+        Optional<Item> maybeItem = itemPackage.getItem(itemType);
+
+        if (maybeItem.isPresent()) {
+            // Note: I only use `doubleValue()` to make it exact match with given examples.
+            // Otherwise, I'd prefer to keep it a BigDecimal.
+            Item item = maybeItem.get();
+                builder.append('\t') .append(itemType.getDisplayName())
+                    .append('\t').append(item.getId())
+                    .append('\t').append(item.getPrice().doubleValue());
+        } else {
+            // I append the extra tabs when it's not present to make it exact match
+            // with given examples.
+            builder.append("\t\t\t");
+        }
     }
 
 }

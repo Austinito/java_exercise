@@ -57,7 +57,7 @@ public class ItemReader {
                         e);
             }
 
-            return Optional.of(new Item(itemId, itemType, price));
+            return Optional.of(Item.createItem(itemId, itemType, price));
         } else {
             return Optional.empty();
         }
